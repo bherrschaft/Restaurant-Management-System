@@ -1,3 +1,7 @@
+package com.restaurant.management.reports;
+
+import com.restaurant.management.database.DatabaseConnection;
+
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;

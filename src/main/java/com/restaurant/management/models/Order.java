@@ -1,3 +1,5 @@
+package com.restaurant.management.models;
+
 import java.util.List;
 
 public class Order {

@@ -1,3 +1,5 @@
+package com.restaurant.management.models;
+
 public class Reservation {
     private int reservationId;
     private String customerName;

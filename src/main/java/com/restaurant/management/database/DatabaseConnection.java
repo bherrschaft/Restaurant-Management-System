@@ -1,3 +1,5 @@
+package com.restaurant.management.database;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;

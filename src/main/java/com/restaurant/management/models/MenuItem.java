@@ -1,3 +1,5 @@
+package com.restaurant.management.models;
+
 public class MenuItem {
     private int itemId;
     private String itemName;

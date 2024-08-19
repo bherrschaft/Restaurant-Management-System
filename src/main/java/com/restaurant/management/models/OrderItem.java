@@ -1,3 +1,5 @@
+package com.restaurant.management.models;
+
 public class OrderItem {
     private int orderItemId;
     private int orderId;

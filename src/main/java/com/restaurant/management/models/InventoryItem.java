@@ -1,3 +1,5 @@
+package com.restaurant.management.models;
+
 public class InventoryItem {
     private int ingredientId;
     private String ingredientName;

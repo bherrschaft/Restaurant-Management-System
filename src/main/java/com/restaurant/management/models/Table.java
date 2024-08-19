@@ -1,3 +1,5 @@
+package com.restaurant.management.models;
+
 public class Table {
     private int tableId;
     private int size;

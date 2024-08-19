@@ -1,3 +1,5 @@
+package com.restaurant.management.models;
+
 public class SpecialOffer {
     private int offerId;
     private String description;

@@ -1,3 +1,5 @@
+package com.restaurant.management.models;
+
 public class Staff {
     private int staffId;
     private String name;
