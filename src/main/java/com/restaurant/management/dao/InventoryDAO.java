@@ -1,7 +1,7 @@
 package com.restaurant.management.dao;
 
 import com.restaurant.management.database.DatabaseConnection;
-
+import com.restaurant.management.models.InventoryItem;  // Ensure this import is present
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

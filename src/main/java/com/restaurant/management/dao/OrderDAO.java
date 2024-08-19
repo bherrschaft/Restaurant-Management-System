@@ -1,5 +1,6 @@
 package com.restaurant.management.dao;
-
+import com.restaurant.management.models.Order;  // Ensure this import is present
+import com.restaurant.management.models.OrderItem;  // Ensure this import is present
 import com.restaurant.management.database.DatabaseConnection;
 
 import java.sql.Connection;
@@ -89,6 +90,41 @@ public class OrderDAO {
             pstmt.setString(1, status);
             pstmt.setInt(2, orderId);
             pstmt.executeUpdate();
+        }
+    }
+    public void deleteOrder(int orderId) throws SQLException {
+        // First, delete all order items associated with the order
+        String deleteOrderItemsQuery = "DELETE FROM OrderItems WHERE order_id = ?";
+        // Then, delete the order itself
+        String deleteOrderQuery = "DELETE FROM Orders WHERE order_id = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection()) {
+            // Start a transaction
+            conn.setAutoCommit(false);
+
+            try (PreparedStatement deleteOrderItemsStmt = conn.prepareStatement(deleteOrderItemsQuery);
+                 PreparedStatement deleteOrderStmt = conn.prepareStatement(deleteOrderQuery)) {
+
+                // Delete order items
+                deleteOrderItemsStmt.setInt(1, orderId);
+                deleteOrderItemsStmt.executeUpdate();
+
+                // Delete the order
+                deleteOrderStmt.setInt(1, orderId);
+                deleteOrderStmt.executeUpdate();
+
+                // Commit the transaction
+                conn.commit();
+
+                System.out.println("Order deleted successfully.");
+            } catch (SQLException e) {
+                // If something goes wrong, rollback the transaction
+                conn.rollback();
+                throw e;
+            } finally {
+                // Reset the auto-commit mode to true
+                conn.setAutoCommit(true);
+            }
         }
     }
 }

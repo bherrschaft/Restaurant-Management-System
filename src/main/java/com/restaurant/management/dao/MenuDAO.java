@@ -1,5 +1,5 @@
 package com.restaurant.management.dao;
-
+import com.restaurant.management.models.MenuItem;  // Ensure this import is present
 import com.restaurant.management.database.DatabaseConnection;
 
 import java.sql.Connection;
