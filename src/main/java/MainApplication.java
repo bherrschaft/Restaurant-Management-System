@@ -25,10 +25,14 @@ public class MainApplication {
     private static final MenuDAO menuDAO = new MenuDAO();
     private static final TableDAO tableDAO = new TableDAO();
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException, NoSuchAlgorithmException {
+
         try {
             DatabaseInitializer.initialize();
+            Authentication auth = new Authentication();
+            auth.initUsers();
             showInitialMenu();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -37,9 +41,8 @@ public class MainApplication {
     private static void showInitialMenu() {
         while (true) {
             System.out.println("\n=== Welcome to the Restaurant Management System ===");
-            System.out.println("1. Register");
-            System.out.println("2. Login");
-            System.out.println("3. Exit");
+            System.out.println("1. Login");
+            System.out.println("2. Exit");
             System.out.print("Enter your choice: ");
 
             int choice = scanner.nextInt();
@@ -47,12 +50,9 @@ public class MainApplication {
 
             switch (choice) {
                 case 1:
-                    registerUser();
-                    break;
-                case 2:
                     loginUser();
                     break;
-                case 3:
+                case 2:
                     System.out.println("Exiting the system.");
                     System.exit(0);
                 default:
@@ -61,21 +61,7 @@ public class MainApplication {
         }
     }
 
-    private static void registerUser() {
-        try {
-            System.out.print("Enter username: ");
-            String username = scanner.nextLine();
-            System.out.print("Enter password: ");
-            String password = scanner.nextLine();
-            System.out.print("Enter role (staff/manager): ");
-            String role = scanner.nextLine();
 
-            auth.register(username, password, role);
-            System.out.println("User registered successfully!");
-        } catch (SQLException | NoSuchAlgorithmException e) {
-            System.out.println("Error registering user: " + e.getMessage());
-        }
-    }
 
     private static void loginUser() {
         try {
@@ -145,7 +131,7 @@ public class MainApplication {
 
         switch (choice) {
             case 1:
-                registerUser();
+                loginUser();
                 break;
             case 2:
                 return;
