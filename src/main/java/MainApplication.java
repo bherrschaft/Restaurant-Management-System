@@ -40,7 +40,7 @@ public class MainApplication {
 
     private static void showInitialMenu() {
         while (true) {
-            System.out.println("\n=== Welcome to the Restaurant Management System ===");
+            System.out.println("\n=== Kyle's Burger Shack ===");
             System.out.println("1. Login");
             System.out.println("2. Exit");
             System.out.print("Enter your choice: ");
@@ -84,11 +84,11 @@ public class MainApplication {
     private static void showMainMenu() {
         while (true) {
             System.out.println("\n=== Main Menu ===");
-            System.out.println("1. User Management");
-            System.out.println("2. Inventory Management");
-            System.out.println("3. Order Management");
-            System.out.println("4. Create Menu Item");
-            System.out.println("5. Create Table");
+            System.out.println("1. Table Options");
+            System.out.println("2. Order Options");
+            System.out.println("3. Menu Options");
+            System.out.println("4. Inventory Options");
+            System.out.println("5. Sales Report");
             System.out.println("6. Logout");
             System.out.print("Enter your choice: ");
 
@@ -121,20 +121,28 @@ public class MainApplication {
     }
 
     private static void userManagementMenu() {
-        System.out.println("\n=== User Management ===");
-        System.out.println("1. Register User");
-        System.out.println("2. Back to Main Menu");
-        System.out.print("Enter your choice: ");
+        System.out.println("\n=== Table Options ===");
+        System.out.println("1. Assign a Table");
+        System.out.println("2. Update a table");
+        System.out.println("3. Print table list");
+        System.out.println("0. Go Back\n");
+        System.out.println("Enter your choice: ");
 
         int choice = scanner.nextInt();
         scanner.nextLine();  // Consume newline
 
         switch (choice) {
             case 1:
-                loginUser();
+                createTable();
                 break;
             case 2:
-                return;
+                updateTableStatus();
+                break;
+            case 3:
+                viewAllTables();
+                break;
+
+
             default:
                 System.out.println("Invalid choice. Please try again.");
         }
@@ -374,4 +382,42 @@ public class MainApplication {
             System.out.println("Error creating table: " + e.getMessage());
         }
     }
+    private static void updateTableStatus() {
+        try {
+            // Prompt the user for table ID
+            System.out.print("Enter Table ID to update: ");
+            int tableId = scanner.nextInt();
+            scanner.nextLine();  // Consume newline
+
+            // Prompt the user for new status
+            System.out.print("Enter new status for the table (e.g., 'Available', 'Occupied', 'Reserved'): ");
+            String status = scanner.nextLine();
+
+            // Update the table status using TableDAO
+            tableDAO.updateTableStatus(tableId, status);
+            System.out.println("Table status updated successfully!");
+
+        } catch (SQLException e) {
+            System.out.println("Error updating table status: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Invalid input. Please try again.");
+        }
+    }
+    private static void viewAllTables() {
+        try {
+            // Fetch all tables from the TableDAO
+            List<Table> tables = tableDAO.getAllTables();
+
+            // Display the table information to the user
+            System.out.println("\n=== All Tables ===");
+            for (Table table : tables) {
+                System.out.printf("Table ID: %d, Size: %d, Status: %s%n",
+                        table.getTableId(), table.getSize(), table.getStatus());
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error retrieving tables: " + e.getMessage());
+        }
+    }
+
 }
