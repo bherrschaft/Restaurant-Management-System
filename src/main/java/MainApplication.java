@@ -377,7 +377,7 @@ public class MainApplication {
 
             Table table = new Table();
             table.setSize(size);
-            table.setStatus(status);
+            table.setStatus(String.valueOf(Table.Status.valueOf(status)));
 
             tableDAO.addTable(table);
             System.out.println("Table created successfully!");
