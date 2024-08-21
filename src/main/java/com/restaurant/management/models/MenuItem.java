@@ -58,11 +58,11 @@ public class MenuItem {
             cheeseBurger.price = 5.99;
             cheeseBurger.ingredients = "Buns, Beef, Lettuce, Tomato, Pickles, Ketchup";
 
-            chickenSandwich.itemName = "Cheese Burger";
-            chickenSandwich.description = "A cheese burger";
+            chickenSandwich.itemName = "Chicken Sandwich";
+            chickenSandwich.description = "A chicken Sandwich";
             chickenSandwich.preparationTime = 2;
             chickenSandwich.price = 5.99;
-            chickenSandwich.ingredients = "Buns, Beef, Lettuce, Tomato, Pickles, Ketchup";
+            chickenSandwich.ingredients = "Buns, Chicken, Lettuce, Tomato, Pickles, Ketchup";
 
             menuDAO.addMenuItem(cheeseBurger);
             menuDAO.addMenuItem(veggieBurg);

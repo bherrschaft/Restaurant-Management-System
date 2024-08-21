@@ -14,11 +14,9 @@ import com.restaurant.management.reports.SalesReport;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+
 public class MainApplication {
 
     private static final Scanner scanner = new Scanner(System.in);
@@ -35,6 +33,8 @@ public class MainApplication {
             DatabaseInitializer.initialize();
             Authentication auth = new Authentication();
             auth.initUsers();
+            InventoryDAO initInv = new InventoryDAO();
+            initInv.initInventoryItems();
             MenuItem initMenu = new MenuItem();
             initMenu.initMenuItems();
             showInitialMenu();
@@ -46,23 +46,29 @@ public class MainApplication {
 
     private static void showInitialMenu() {
         while (true) {
-            System.out.println("\n=== Kyle's Burger Shack ===");
-            System.out.println("1. Login");
-            System.out.println("2. Exit");
-            System.out.print("Enter your choice: ");
+            try {
+                System.out.println("\n=== Kyle's Burger Shack ===");
+                System.out.println("1. Login");
+                System.out.println("2. Exit");
+                System.out.print("Enter your choice: ");
 
-            int choice = scanner.nextInt();
-            scanner.nextLine();  // Consume newline
+                int choice = scanner.nextInt();
+                scanner.nextLine();  // Consume newline
 
-            switch (choice) {
-                case 1:
-                    loginUser();
-                    break;
-                case 2:
-                    System.out.println("Exiting the system.");
-                    System.exit(0);
-                default:
-                    System.out.println("Invalid choice. Please try again.");
+                switch (choice) {
+                    case 1:
+                        loginUser();
+                        break;
+                    case 2:
+                        System.out.println("Exiting the system.");
+                        System.exit(0);
+                        break;
+                    default:
+                        System.out.println("Invalid choice. Please try again.");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter a valid number.");
+                scanner.nextLine();  // Consume invalid input
             }
         }
     }
@@ -131,7 +137,7 @@ public class MainApplication {
         System.out.println("1. Assign a Table");
         System.out.println("2. Update a table");
         System.out.println("3. Print table list");
-        System.out.println("0. Go Back\n");
+        System.out.println("4. Back to Main Menu");
         System.out.println("Enter your choice: ");
 
         int choice = scanner.nextInt();

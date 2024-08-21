@@ -1,10 +1,16 @@
 package com.restaurant.management.models;
 
+import com.restaurant.management.dao.InventoryDAO;
+
+import java.sql.SQLException;
+
 public class InventoryItem {
     private int ingredientId;
     private String ingredientName;
     private int quantityInStock;
     private int lowStockAlertThreshold;
+
+
 
     // Getters and Setters
     public int getIngredientId() {
