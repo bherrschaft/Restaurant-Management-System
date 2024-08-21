@@ -26,6 +26,7 @@ public class DatabaseInitializer {
                 "order_id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "table_id INTEGER," +
                 "total_price REAL," +
+                "date TEXT" +
                 "status TEXT NOT NULL" +
                 ");";
 

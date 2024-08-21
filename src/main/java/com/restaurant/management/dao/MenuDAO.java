@@ -67,4 +67,19 @@ public class MenuDAO {
             pstmt.executeUpdate();
         }
     }
+
+    // Method to get the price of an item by its ID
+    public double getItemPrice(int itemId) throws SQLException {
+        String query = "SELECT price FROM Menu WHERE item_id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setInt(1, itemId);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return rs.getDouble("price");
+            } else {
+                throw new SQLException("Item with ID " + itemId + " does not exist.");
+            }
+        }
+    }
 }

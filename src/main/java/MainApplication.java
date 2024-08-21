@@ -17,7 +17,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-
+import java.text.SimpleDateFormat;
+import java.util.Date;
 public class MainApplication {
 
     private static final Scanner scanner = new Scanner(System.in);
@@ -260,9 +261,10 @@ public class MainApplication {
         try {
             List<Order> orders = orderDAO.getAllOrders();
             System.out.println("\n=== Orders ===");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             for (Order order : orders) {
-                System.out.printf("Order ID: %d, Table ID: %d, Total: $%.2f, Status: %s%n",
-                        order.getOrderId(), order.getTableId(), order.getTotalPrice(), order.getStatus());
+                System.out.printf("Order ID: %d, Table ID: %d, Total: $%.2f, Status: %s, Date: %s%n",
+                        order.getOrderId(), order.getTableId(), order.getTotalPrice(), order.getStatus(), sdf.format(order.getDate()));
                 System.out.println("Items:");
                 for (OrderItem item : order.getItems()) {
                     System.out.printf("  - Item ID: %d, Quantity: %d%n",
@@ -289,18 +291,19 @@ public class MainApplication {
                 int quantity = scanner.nextInt();
                 scanner.nextLine();  // Consume newline
 
-                OrderItem orderItem = new OrderItem();  // Create a new OrderItem instance
-                orderItem.setItemId(itemId);            // Set the item ID
-                orderItem.setQuantity(quantity);        // Set the quantity
+                OrderItem orderItem = new OrderItem();
+                orderItem.setItemId(itemId);
+                orderItem.setQuantity(quantity);
 
-                items.add(orderItem);                   // Add the item to the list
+                items.add(orderItem);
             }
 
             Order order = new Order();
             order.setTableId(tableId);
             order.setItems(items);
-            order.setTotalPrice(calculateTotalPrice(items));  // Implement this method to calculate the total
+            order.setTotalPrice(calculateTotalPrice(items));  // Calculate the total price
             order.setStatus("Waiting");
+            order.setDate(new Date());  // Set the current date and time
 
             orderDAO.addOrder(order);
             System.out.println("Order created successfully!");
@@ -310,9 +313,17 @@ public class MainApplication {
     }
 
     private static double calculateTotalPrice(List<OrderItem> items) {
-        // Implement logic to calculate the total price of the order based on items
-        // You can fetch item prices from the database using MenuDAO or similar
-        return 0.0;
+        double totalPrice = 0.0;
+        try {
+            MenuDAO menuDAO = new MenuDAO();  // Instantiate the MenuDAO to fetch item prices
+            for (OrderItem item : items) {
+                double price = menuDAO.getItemPrice(item.getItemId());  // Assuming this method exists in MenuDAO
+                totalPrice += price * item.getQuantity();
+            }
+        } catch (SQLException e) {
+            System.out.println("Error calculating total price: " + e.getMessage());
+        }
+        return totalPrice;
     }
 
     private static void updateOrderStatus() {
