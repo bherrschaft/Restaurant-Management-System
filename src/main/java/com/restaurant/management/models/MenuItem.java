@@ -39,16 +39,39 @@ public class MenuItem {
         this.ingredients = ingredients;
     }
 
+
     public void initMenuItems() throws SQLException {
-        MenuItem vegieBurg = new MenuItem();
-        if (menuDAO.getAllMenuItems() == null){
-            vegieBurg.itemName = "Vegie Burger";
-            vegieBurg.description = "A vegan burger";
-            vegieBurg.preparationTime = 2;
-            vegieBurg.price = 5.99;
-            vegieBurg.ingredients = "Buns, Veggie, Lettuce, Tomato, Pickles, Ketchup";
+        MenuItem veggieBurg = new MenuItem();
+        MenuItem cheeseBurger = new MenuItem();
+        MenuItem chickenSandwich = new MenuItem();
+
+        if (menuDAO.getAllMenuItems().size() < 5){
+            veggieBurg.itemName = "Veggie Burger";
+            veggieBurg.description = "A vegan burger";
+            veggieBurg.preparationTime = 2;
+            veggieBurg.price = 5.99;
+            veggieBurg.ingredients = "Buns, Veggie, Lettuce, Tomato, Pickles, Ketchup";
+
+            cheeseBurger.itemName = "Cheese Burger";
+            cheeseBurger.description = "A cheese burger";
+            cheeseBurger.preparationTime = 2;
+            cheeseBurger.price = 5.99;
+            cheeseBurger.ingredients = "Buns, Beef, Lettuce, Tomato, Pickles, Ketchup";
+
+            chickenSandwich.itemName = "Cheese Burger";
+            chickenSandwich.description = "A cheese burger";
+            chickenSandwich.preparationTime = 2;
+            chickenSandwich.price = 5.99;
+            chickenSandwich.ingredients = "Buns, Beef, Lettuce, Tomato, Pickles, Ketchup";
+
+            menuDAO.addMenuItem(cheeseBurger);
+            menuDAO.addMenuItem(veggieBurg);
+            menuDAO.addMenuItem(chickenSandwich);
+
         }
     }
+
+
     // Getters and Setters
     public int getItemId() {
         return itemId;

@@ -41,7 +41,7 @@ public class MenuDAO {
             pstmt.setInt(3, item.getPreparationTime());
             pstmt.setDouble(4, item.getPrice());
             pstmt.setString(5, item.getIngredients());
-            pstmt.executeUpdate();
+            pstmt.execute();
         }
     }
 

@@ -256,20 +256,31 @@ public class MainApplication {
     private static void viewOrders() {
         try {
             List<Order> orders = orderDAO.getAllOrders();
+            if (orders == null || orders.isEmpty()) {
+                System.out.println("No orders found.");
+                return;
+            }
+
             System.out.println("\n=== Orders ===");
             for (Order order : orders) {
                 System.out.printf("Order ID: %d, Table ID: %d, Total: $%.2f, Status: %s%n",
                         order.getOrderId(), order.getTableId(), order.getTotalPrice(), order.getStatus());
                 System.out.println("Items:");
-                for (OrderItem item : order.getItems()) {
-                    System.out.printf("  - Item ID: %d, Quantity: %d%n",
-                            item.getItemId(), item.getQuantity());
+                List<OrderItem> items = order.getItems();
+                if (items != null && !items.isEmpty()) {
+                    for (OrderItem item : items) {
+                        System.out.printf("  - Item ID: %d, Quantity: %d%n",
+                                item.getItemId(), item.getQuantity());
+                    }
+                } else {
+                    System.out.println("  No items found for this order.");
                 }
             }
         } catch (SQLException e) {
             System.out.println("Error retrieving orders: " + e.getMessage());
         }
     }
+
 
     private static void createOrder() {
         try {
@@ -286,18 +297,22 @@ public class MainApplication {
                 int quantity = scanner.nextInt();
                 scanner.nextLine();  // Consume newline
 
-                OrderItem orderItem = new OrderItem();  // Create a new OrderItem instance
-                orderItem.setItemId(itemId);            // Set the item ID
-                orderItem.setQuantity(quantity);        // Set the quantity
+                OrderItem orderItem = new OrderItem();
+                orderItem.setItemId(itemId);
+                orderItem.setQuantity(quantity);
 
-                items.add(orderItem);                   // Add the item to the list
+                items.add(orderItem);
             }
+
+            // Prompt for order status
+            System.out.print("Enter Order Status (e.g., Waiting, In Progress, Completed): ");
+            String status = scanner.nextLine();
 
             Order order = new Order();
             order.setTableId(tableId);
             order.setItems(items);
             order.setTotalPrice(calculateTotalPrice(items));  // Implement this method to calculate the total
-            order.setStatus("Waiting");
+            order.setStatus(status);  // Set the status based on user input
 
             orderDAO.addOrder(order);
             System.out.println("Order created successfully!");
@@ -305,6 +320,7 @@ public class MainApplication {
             System.out.println("Error creating order: " + e.getMessage());
         }
     }
+
 
     private static double calculateTotalPrice(List<OrderItem> items) {
         // Implement logic to calculate the total price of the order based on items
