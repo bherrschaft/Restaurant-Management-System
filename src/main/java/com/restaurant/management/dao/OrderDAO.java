@@ -139,12 +139,7 @@ public class OrderDAO {
 
                 // Commit the transaction
                 conn.commit();
-
-                System.out.println("Order deleted successfully.");
-            } catch (SQLException e) {
-                // If something goes wrong, rollback the transaction
-                conn.rollback();
-                throw e;
+                // took out double throw error
             } finally {
                 // Reset the auto-commit mode to true
                 conn.setAutoCommit(true);
