@@ -9,13 +9,16 @@ import com.restaurant.management.dao.MenuDAO;
 import com.restaurant.management.dao.TableDAO;
 import com.restaurant.management.models.MenuItem;
 import com.restaurant.management.models.Table;
+import com.restaurant.management.reports.SalesReport;
 
+import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-
+import java.text.SimpleDateFormat;
+import java.util.Date;
 public class MainApplication {
 
     private static final Scanner scanner = new Scanner(System.in);
@@ -24,6 +27,7 @@ public class MainApplication {
     private static final OrderDAO orderDAO = new OrderDAO();
     private static final MenuDAO menuDAO = new MenuDAO();
     private static final TableDAO tableDAO = new TableDAO();
+    private static final SalesReport salesReport = new SalesReport(); // initialized SalesReport
 
     public static void main(String[] args) throws SQLException, NoSuchAlgorithmException {
 
@@ -111,7 +115,7 @@ public class MainApplication {
                     inventoryManagementMenu();
                     break;
                 case 5:
-                    // TODO create option for sales report
+                    generateDailyReport();
                     break;
                 case 6:
                     System.out.println("Logging out...");
@@ -281,7 +285,6 @@ public class MainApplication {
         }
     }
 
-
     private static void createOrder() {
         try {
             System.out.print("Enter Table ID: ");
@@ -297,11 +300,11 @@ public class MainApplication {
                 int quantity = scanner.nextInt();
                 scanner.nextLine();  // Consume newline
 
-                OrderItem orderItem = new OrderItem();
-                orderItem.setItemId(itemId);
-                orderItem.setQuantity(quantity);
+                OrderItem orderItem = new OrderItem();  // Create a new OrderItem instance
+                orderItem.setItemId(itemId);            // Set the item ID
+                orderItem.setQuantity(quantity);        // Set the quantity
 
-                items.add(orderItem);
+                items.add(orderItem);                   // Add the item to the list
             }
 
             // Prompt for order status
@@ -323,9 +326,17 @@ public class MainApplication {
 
 
     private static double calculateTotalPrice(List<OrderItem> items) {
-        // Implement logic to calculate the total price of the order based on items
-        // You can fetch item prices from the database using MenuDAO or similar
-        return 0.0;
+        double totalPrice = 0.0;
+        try {
+            MenuDAO menuDAO = new MenuDAO();  // Instantiate the MenuDAO to fetch item prices
+            for (OrderItem item : items) {
+                double price = menuDAO.getItemPrice(item.getItemId());  // Assuming this method exists in MenuDAO
+                totalPrice += price * item.getQuantity();
+            }
+        } catch (SQLException e) {
+            System.out.println("Error calculating total price: " + e.getMessage());
+        }
+        return totalPrice;
     }
 
     private static void updateOrderStatus() {
@@ -398,8 +409,7 @@ public class MainApplication {
 
             Table table = new Table();
             table.setSize(size);
-            table.setStatus(status);
-
+            table.setStatus(String.valueOf(Table.Status.valueOf(status)));
             tableDAO.addTable(table);
             System.out.println("Table created successfully!");
         } catch (SQLException e) {
@@ -735,11 +745,14 @@ public class MainApplication {
 
 //brittany 635 - 735
 
-
-
-
-
-
+//added method to generate Sales Report
+    private static void generateDailyReport() {
+        try {
+            salesReport.generateDailyReport();  // Call the method to generate the report
+        } catch (SQLException | IOException e) {
+            System.out.println("Error generating sales report: " + e.getMessage());
+        }
+    }
 
 
 

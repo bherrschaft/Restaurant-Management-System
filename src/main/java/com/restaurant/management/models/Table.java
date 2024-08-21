@@ -1,6 +1,7 @@
 package com.restaurant.management.models;
 
 public class Table {
+    public static Boolean Status;
     private int tableId;
     private int size;
     private String status;
@@ -30,3 +31,6 @@ public class Table {
         this.status = status;
     }
 }
+
+
+

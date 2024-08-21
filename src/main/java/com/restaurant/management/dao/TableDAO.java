@@ -29,15 +29,16 @@ public class TableDAO {
         return tables;
     }
 
-        public void addTable(Table table) throws SQLException {
-            String query = "INSERT INTO Tables (size, status) VALUES (?, ?)";
-            try (Connection conn = DatabaseConnection.getConnection();
-                 PreparedStatement pstmt = conn.prepareStatement(query)) {
-                pstmt.setInt(1, table.getSize());
-                pstmt.setString(2, table.getStatus());
-                pstmt.executeUpdate();
-            }
+    public void addTable(Table table) throws SQLException {
+        String query = "INSERT INTO Tables (size, status) VALUES (?, ?)";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setInt(1, table.getSize());
+            pstmt.setString(2, table.getStatus());
+            pstmt.executeUpdate();
         }
+    }
+
     public void updateTableStatus(int tableId, String status) throws SQLException {
         String query = "UPDATE Tables SET status = ? WHERE table_id = ?";
         try (Connection conn = DatabaseConnection.getConnection();
@@ -47,5 +48,5 @@ public class TableDAO {
             pstmt.executeUpdate();
         }
     }
-    public void printTableList() throws SQLException {}
+
 }
