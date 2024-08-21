@@ -13,6 +13,31 @@ public class MenuItem {
     private String ingredients;
 
     MenuDAO menuDAO = new MenuDAO();
+    public MenuItem(){
+
+    }
+
+    public MenuItem(int id){
+        this.itemId = id;
+    }
+
+    public MenuItem(String itemName, String description, int preparationTime, double price, String ingredients) {
+        this.itemName = itemName;
+        this.description = description;
+        this.preparationTime = preparationTime;
+        this.price = price;
+        this.ingredients = ingredients;
+    }
+
+
+    public MenuItem(int itemId, String itemName, String description, int preparationTime, double price, String ingredients) {
+        this.itemId = itemId;
+        this.itemName = itemName;
+        this.description = description;
+        this.preparationTime = preparationTime;
+        this.price = price;
+        this.ingredients = ingredients;
+    }
 
     public void initMenuItems() throws SQLException {
         MenuItem vegieBurg = new MenuItem();

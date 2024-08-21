@@ -105,7 +105,7 @@ public class MainApplication {
                     orderManagementMenu();
                     break;
                 case 3:
-                     // TODO create option for sales report
+                    menuManagement();
                     break;
                 case 4:
                     inventoryManagementMenu();
@@ -341,23 +341,28 @@ public class MainApplication {
     }
 
     private static void createMenuItem() {
+        Scanner scanner = new Scanner(System.in);
         try {
             System.out.print("Enter item name: ");
             String itemName = scanner.nextLine();
-            System.out.print("Enter price: ");
-            double price = scanner.nextDouble();
-            scanner.nextLine();  // Consume newline
+
             System.out.print("Enter description: ");
             String description = scanner.nextLine();
+
             System.out.print("Enter preparation time (in minutes): ");
             int preparationTime = scanner.nextInt();
-            scanner.nextLine();  // Consume newline
+            scanner.nextLine();
 
-            MenuItem menuItem = new MenuItem();
-            menuItem.setItemName(itemName);
-            menuItem.setPrice(price);
-            menuItem.setDescription(description);
-            menuItem.setPreparationTime(preparationTime);
+            System.out.print("Enter price: ");
+            double price = scanner.nextDouble();
+            scanner.nextLine();
+
+            System.out.print("Enter the new ingredients: ");
+            String ingredients = scanner.nextLine();
+
+            MenuItem menuItem = new MenuItem(itemName,description,preparationTime,price,ingredients);
+
+
 
             menuDAO.addMenuItem(menuItem);
             System.out.println("Menu item created successfully!");
@@ -435,8 +440,66 @@ public class MainApplication {
 //Daylen 433 - 533
 
 
-// creating menu options menu
+// creating menu management menu
 // createMenuItem();
+    public static void updateMenuItemPrompt() {
+        Scanner scanner = new Scanner(System.in);
+
+        // Prompt for the item ID
+        System.out.print("Enter the ID of the menu item to update: ");
+        int itemId = scanner.nextInt();
+        scanner.nextLine(); // Consume the newline
+
+        // Prompt for the new item name
+        System.out.print("Enter the new item name: ");
+        String itemName = scanner.nextLine();
+
+        // Prompt for the new description
+        System.out.print("Enter the new description: ");
+        String description = scanner.nextLine();
+
+        // Prompt for the new preparation time
+        System.out.print("Enter the new preparation time (in minutes): ");
+        int preparationTime = scanner.nextInt();
+        scanner.nextLine(); // Consume the newline
+
+        // Prompt for the new price
+        System.out.print("Enter the new price: ");
+        double price = scanner.nextDouble();
+        scanner.nextLine(); // Consume the newline
+
+        // Prompt for the new ingredients
+        System.out.print("Enter the new ingredients: ");
+        String ingredients = scanner.nextLine();
+
+        // Create the MenuItem object with the new values
+        MenuItem item = new MenuItem(itemId, itemName, description, preparationTime, price, ingredients);
+
+        // Update the menu item in the database
+        try {
+            MenuDAO.updateMenuItem(item);
+            System.out.println("Menu item updated successfully.");
+        } catch (SQLException e) {
+            System.out.println("Error updating menu item: " + e.getMessage());
+        }
+    }
+
+    // deletion method per ID
+    public static void deleteMenuItem() {
+        System.out.print("Enter ID of the menu item to delete: ");
+        int itemId = scanner.nextInt();
+        scanner.nextLine();
+
+
+        try {
+            MenuDAO.deleteMenuItem(itemId);
+            System.out.println("Menu item deleted successfully!");
+        }catch(SQLException e) {
+            System.out.println("Error deleting menu item: " + e.getMessage());
+        }
+    }
+
+
 
     public static void menuManagement() {
         System.out.println("\n=== Menu Management ===");
@@ -444,6 +507,19 @@ public class MainApplication {
         System.out.println("2. Update Menu Item");
         System.out.println("3. Delete Menu Item");
         System.out.println("4. Back to Main Menu");
+
+        int choice = scanner.nextInt();
+        switch (choice) {
+            case 1:
+                createMenuItem();
+                break;
+            case 2:
+                updateMenuItemPrompt();
+                break;
+            case 3:
+                deleteMenuItem();
+
+        }
 
     }
 
