@@ -45,7 +45,7 @@ public class MenuDAO {
         }
     }
 
-    public void updateMenuItem(MenuItem item) throws SQLException {
+    public static void updateMenuItem(MenuItem item) throws SQLException {
         String query = "UPDATE Menu SET item_name = ?, description = ?, preparation_time = ?, price = ?, ingredients = ? WHERE item_id = ?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
@@ -59,7 +59,7 @@ public class MenuDAO {
         }
     }
 
-    public void deleteMenuItem(int itemId) throws SQLException {
+    public static void deleteMenuItem(int itemId) throws SQLException {
         String query = "DELETE FROM Menu WHERE item_id = ?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
