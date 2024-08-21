@@ -31,6 +31,8 @@ public class MainApplication {
             DatabaseInitializer.initialize();
             Authentication auth = new Authentication();
             auth.initUsers();
+            MenuItem initMenu = new MenuItem();
+            initMenu.initMenuItems();
             showInitialMenu();
 
         } catch (SQLException e) {
@@ -100,16 +102,16 @@ public class MainApplication {
                     userManagementMenu();
                     break;
                 case 2:
-                    inventoryManagementMenu();
-                    break;
-                case 3:
                     orderManagementMenu();
                     break;
+                case 3:
+                     // TODO create option for sales report
+                    break;
                 case 4:
-                    createMenuItem();
+                    inventoryManagementMenu();
                     break;
                 case 5:
-                    createTable();
+                    // TODO create option for sales report
                     break;
                 case 6:
                     System.out.println("Logging out...");
@@ -430,13 +432,20 @@ public class MainApplication {
 
 
 
-//Dylan 433 - 533
+//Daylen 433 - 533
 
 
+// creating menu options menu
+// createMenuItem();
 
+    public static void menuManagement() {
+        System.out.println("\n=== Menu Management ===");
+        System.out.println("1. Add Menu Item");
+        System.out.println("2. Update Menu Item");
+        System.out.println("3. Delete Menu Item");
+        System.out.println("4. Back to Main Menu");
 
-
-
+    }
 
 
 

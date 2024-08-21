@@ -67,11 +67,6 @@ public class Authentication {
             userDAO.addUser(user4);
         }
 
-
-
-
-
-
     }
 
 

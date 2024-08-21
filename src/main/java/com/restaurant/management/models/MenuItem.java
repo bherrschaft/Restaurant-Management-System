@@ -1,5 +1,9 @@
 package com.restaurant.management.models;
 
+import com.restaurant.management.dao.MenuDAO;
+
+import java.sql.SQLException;
+
 public class MenuItem {
     private int itemId;
     private String itemName;
@@ -8,6 +12,18 @@ public class MenuItem {
     private double price;
     private String ingredients;
 
+    MenuDAO menuDAO = new MenuDAO();
+
+    public void initMenuItems() throws SQLException {
+        MenuItem vegieBurg = new MenuItem();
+        if (menuDAO.getAllMenuItems() == null){
+            vegieBurg.itemName = "Vegie Burger";
+            vegieBurg.description = "A vegan burger";
+            vegieBurg.preparationTime = 2;
+            vegieBurg.price = 5.99;
+            vegieBurg.ingredients = "Buns, Veggie, Lettuce, Tomato, Pickles, Ketchup";
+        }
+    }
     // Getters and Setters
     public int getItemId() {
         return itemId;
