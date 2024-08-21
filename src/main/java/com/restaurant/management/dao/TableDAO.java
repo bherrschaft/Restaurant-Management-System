@@ -48,4 +48,8 @@ public class TableDAO {
             pstmt.executeUpdate();
         }
     }
+<<<<<<< Updated upstream
+=======
+//removed throw exception
+>>>>>>> Stashed changes
 }

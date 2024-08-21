@@ -9,7 +9,9 @@ import com.restaurant.management.dao.MenuDAO;
 import com.restaurant.management.dao.TableDAO;
 import com.restaurant.management.models.MenuItem;
 import com.restaurant.management.models.Table;
+import com.restaurant.management.reports.SalesReport;
 
+import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -24,6 +26,7 @@ public class MainApplication {
     private static final OrderDAO orderDAO = new OrderDAO();
     private static final MenuDAO menuDAO = new MenuDAO();
     private static final TableDAO tableDAO = new TableDAO();
+    private static final SalesReport salesReport = new SalesReport(); // initialized SalesReport
 
     public static void main(String[] args) throws SQLException, NoSuchAlgorithmException {
 
@@ -111,7 +114,7 @@ public class MainApplication {
                     inventoryManagementMenu();
                     break;
                 case 5:
-                    // TODO create option for sales report
+                    generateDailyReport();
                     break;
                 case 6:
                     System.out.println("Logging out...");
@@ -719,11 +722,14 @@ public class MainApplication {
 
 //brittany 635 - 735
 
-
-
-
-
-
+//added method to generate Sales Report
+    private static void generateDailyReport() {
+        try {
+            salesReport.generateDailyReport();  // Call the method to generate the report
+        } catch (SQLException | IOException e) {
+            System.out.println("Error generating sales report: " + e.getMessage());
+        }
+    }
 
 
 
