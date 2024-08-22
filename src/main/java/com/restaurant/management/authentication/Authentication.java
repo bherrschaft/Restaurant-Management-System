@@ -9,22 +9,45 @@ public class Authentication {
 
     private UserDAO userDAO;
 
+    // Constructor
     public Authentication() {
         userDAO = new UserDAO();
     }
 
+    // Login Method
     public boolean login(String username, String password) throws SQLException, NoSuchAlgorithmException {
         User user = userDAO.getUserByUsername(username);
         if (user != null) {
             String hashedPassword = hashPassword(password);
-            return hashedPassword.equals(user.getPasswordHash());
+            if (hashedPassword.equals(user.getPasswordHash())) {
+                System.out.println("Login successful for user: " + username);
+                return true;
+            }
         }
+        System.out.println("Login failed.");
         return false;
     }
 
+    // Role-Based Permission Check Method
+    public boolean hasPermission(String username, String requiredRole) throws SQLException {
+        User user = userDAO.getUserByUsername(username);
+        return user != null && user.getRole().equalsIgnoreCase(requiredRole);
+    }
+
+    // Example of a Role-Specific Task for Managers
+    public boolean performManagerTask(String username) throws SQLException {
+        if (hasPermission(username, "manager")) {
+            // Manager-specific functionality here
+            System.out.println("Manager task performed for: " + username);
+            return true;
+        }
+        System.out.println("Access denied: User " + username + " is not a manager.");
+        return false;
+    }
+
+    // User Initialization Method
     public void initUsers() throws SQLException, NoSuchAlgorithmException {
-        // Initilizing users
-        UserDAO userDAO = new UserDAO();
+        // Initializing users
         User user = new User();
         String userName = "Brittany";
         String user1pass = "pass";
@@ -45,7 +68,6 @@ public class Authentication {
             userDAO.addUser(user2);
         }
 
-
         User user3 = new User();
         String user3Name = "Daylen";
         String user3pass = "pass";
@@ -56,7 +78,6 @@ public class Authentication {
             userDAO.addUser(user3);
         }
 
-
         User user4 = new User();
         String user4Name = "Lexi";
         String user4pass = "pass";
@@ -66,10 +87,20 @@ public class Authentication {
             user4.setRole("manager");
             userDAO.addUser(user4);
         }
-
     }
 
+    // New: View Sales Report Method
+    public boolean viewSalesReport(String username) throws SQLException {
+        if (hasPermission(username, "manager")) {
+            // Simulate showing sales report
+            System.out.println("Displaying sales report for user: " + username);
+            return true;
+        }
+        System.out.println("Access denied: User " + username + " is not a manager.");
+        return false;
+    }
 
+    // Password Hashing Method
     private String hashPassword(String password) throws NoSuchAlgorithmException {
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
         byte[] hash = digest.digest(password.getBytes(StandardCharsets.UTF_8));
@@ -82,3 +113,6 @@ public class Authentication {
         return hexString.toString();
     }
 }
+
+
+
