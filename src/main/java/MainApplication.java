@@ -1,4 +1,5 @@
 import com.restaurant.management.authentication.Authentication;
+import com.restaurant.management.authentication.UserDAO;
 import com.restaurant.management.dao.InventoryDAO;
 import com.restaurant.management.dao.OrderDAO;
 import com.restaurant.management.models.InventoryItem;
@@ -83,13 +84,54 @@ public class MainApplication {
             String password = scanner.nextLine();
 
             if (auth.login(username, password)) {
-                System.out.println("Login successful!");
-                showMainMenu();
+
+                String role = UserDAO.getUserRole(username);
+                if ("manager".equalsIgnoreCase(role)) {
+                    System.out.println("Login successful!");
+                    showMainMenu();
+                }else {
+                    System.out.println("Login successful!");
+                    showStaffMenu();
+                }
             } else {
                 System.out.println("Login failed! Invalid username or password.");
             }
         } catch (SQLException | NoSuchAlgorithmException e) {
             System.out.println("Error logging in: " + e.getMessage());
+        }
+    }
+    private static void showStaffMenu() {
+        while (true) {
+            System.out.println("\n=== Main Menu ===");
+            System.out.println("1. Table Options");
+            System.out.println("2. Order Options");
+            System.out.println("3. Menu Options");
+            System.out.println("4. Inventory Options");
+            System.out.println("5. Logout");
+            System.out.print("Enter your choice: ");
+
+            int choice = scanner.nextInt();
+            scanner.nextLine();  // Consume newline
+
+            switch (choice) {
+                case 1:
+                    userManagementMenu();
+                    break;
+                case 2:
+                    orderManagementMenu();
+                    break;
+                case 3:
+                    menuManagement();
+                    break;
+                case 4:
+                    inventoryManagementMenu();
+                    break;
+                case 5:
+                    System.out.println("Logging out...");
+                    return; // Exit the loop and logout
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+            }
         }
     }
 
@@ -326,10 +368,12 @@ public class MainApplication {
                 items.add(orderItem);                   // Add the item to the list
             }
 
+
             double totalPrice = calculateTotalPrice(items);
             System.out.printf("Total Price: $%.2f%n", totalPrice);
 
-            // Prompt for order status
+
+                // Prompt for order status
             System.out.print("Enter Order Status (e.g., Waiting, In Progress, Completed): ");
             String status = scanner.nextLine();
 
