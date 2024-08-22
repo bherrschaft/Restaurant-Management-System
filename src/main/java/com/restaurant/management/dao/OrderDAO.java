@@ -74,9 +74,10 @@ public class OrderDAO {
     public List<Order> getAllOrders() throws SQLException {
         List<Order> orders = new ArrayList<>();
         String query = "SELECT * FROM Orders";
+
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(query)) {
-            ResultSet rs = pstmt.executeQuery();
+             PreparedStatement pstmt = conn.prepareStatement(query);
+             ResultSet rs = pstmt.executeQuery()) {
 
             while (rs.next()) {
                 Order order = new Order();
@@ -84,20 +85,28 @@ public class OrderDAO {
                 order.setTableId(rs.getInt("table_id"));
                 order.setTotalPrice(rs.getDouble("total_price"));
                 order.setStatus(rs.getString("status"));
-                order.setItems(getOrderItems(order.getOrderId()));
+                // order.setItems(getOrderItems(order.getOrderId()));  // Commented out for testing
+
                 orders.add(order);
             }
+        } catch (SQLException e) {
+            System.out.println("Error retrieving orders: " + e.getMessage());
+            throw e;
         }
         return orders;
     }
 
+
+
     private List<OrderItem> getOrderItems(int orderId) throws SQLException {
         List<OrderItem> items = new ArrayList<>();
         String query = "SELECT * FROM OrderItems WHERE order_id = ?";
+
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(query)) {
+             PreparedStatement pstmt = conn.prepareStatement(query);
+             ResultSet rs = pstmt.executeQuery()) { // Add ResultSet to try-with-resources
+
             pstmt.setInt(1, orderId);
-            ResultSet rs = pstmt.executeQuery();
 
             while (rs.next()) {
                 OrderItem item = new OrderItem();
