@@ -265,31 +265,36 @@ public class MainApplication {
 
     private static void viewOrders() {
         try {
+            System.out.println("Retrieving orders...");
             List<Order> orders = orderDAO.getAllOrders();
+            System.out.println("\n=== Orders ===");
+
             if (orders == null || orders.isEmpty()) {
                 System.out.println("No orders found.");
                 return;
             }
 
-            System.out.println("\n=== Orders ===");
             for (Order order : orders) {
-                System.out.printf("Order ID: %d, Table ID: %d, Total: $%.2f, Status: %s%n",
+                System.out.printf("\nOrder ID: %d\nTable ID: %d\nTotal: $%.2f\nStatus: %s%n",
                         order.getOrderId(), order.getTableId(), order.getTotalPrice(), order.getStatus());
-                System.out.println("Items:");
+
                 List<OrderItem> items = order.getItems();
                 if (items != null && !items.isEmpty()) {
+                    System.out.println("Items:");
                     for (OrderItem item : items) {
-                        System.out.printf("  - Item ID: %d, Quantity: %d%n",
-                                item.getItemId(), item.getQuantity());
+                        System.out.printf("  - Item ID: %d, Quantity: %d%n", item.getItemId(), item.getQuantity());
                     }
-                } else {
-                    System.out.println("  No items found for this order.");
-                }
+                }// else {
+//                    System.out.println("  No items found for this order.");
+//                }
             }
         } catch (SQLException e) {
             System.out.println("Error retrieving orders: " + e.getMessage());
+            e.printStackTrace();
         }
     }
+
+
 
     private static void createOrder() {
         try {
@@ -301,10 +306,12 @@ public class MainApplication {
             while (true) {
                 System.out.print("Enter Item ID (or 0 to finish): ");
                 int itemId = scanner.nextInt();
+                scanner.nextLine();
                 if (itemId == 0) break;
                 System.out.print("Enter Quantity: ");
                 int quantity = scanner.nextInt();
                 scanner.nextLine();  // Consume newline
+
 
                 OrderItem orderItem = new OrderItem();  // Create a new OrderItem instance
                 orderItem.setItemId(itemId);            // Set the item ID
@@ -416,7 +423,7 @@ public class MainApplication {
 
             Table table = new Table();
             table.setSize(size);
-            table.setStatus(String.valueOf(Table.Status.valueOf(status)));
+            table.setStatus(status);
             tableDAO.addTable(table);
             System.out.println("Table created successfully!");
         } catch (SQLException e) {
