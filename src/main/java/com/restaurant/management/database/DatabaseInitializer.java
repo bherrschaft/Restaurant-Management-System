@@ -26,7 +26,7 @@ public class DatabaseInitializer {
                 "order_id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "table_id INTEGER," +
                 "total_price REAL," +
-                "date TEXT" +
+                "order_date TEXT," +  // Use a comma here to separate fields //updated line 29 bb
                 "status TEXT NOT NULL" +
                 ");";
 

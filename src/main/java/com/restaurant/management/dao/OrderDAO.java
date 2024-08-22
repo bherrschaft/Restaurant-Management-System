@@ -32,15 +32,21 @@ public class OrderDAO {
         // Format the date for SQLite (as a string)
         String dateString = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(order.getDate());
 
+//added code line 35-50 for date info in daily sales report /bb
         // Proceed with inserting the order if validations pass
-        String query = "INSERT INTO Orders (table_id, total_price, status, date) VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO Orders (table_id, total_price, status, order_date) VALUES (?, ?, ?, ?)";//added order_date: bb
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
 
             pstmt.setInt(1, order.getTableId());
             pstmt.setDouble(2, order.getTotalPrice());
             pstmt.setString(3, order.getStatus());
-            pstmt.setString(4, dateString); // Set the date
+
+            // Format the date and insert into the database: bb
+            String formattedDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(order.getDate());
+            pstmt.setString(4, formattedDate);
+
+            //pstmt.setString(4, dateString); // Set the date
             pstmt.executeUpdate();
 
             ResultSet rs = pstmt.getGeneratedKeys();

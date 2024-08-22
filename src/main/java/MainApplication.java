@@ -322,6 +322,7 @@ public class MainApplication {
             order.setItems(items);
             order.setTotalPrice(calculateTotalPrice(items));  // Implement this method to calculate the total
             order.setStatus(status);  // Set the status based on user input
+            order.setDate(new Date()); // Set the date //updated line 325 added setDate
 
             orderDAO.addOrder(order);
             System.out.println("Order created successfully!");
