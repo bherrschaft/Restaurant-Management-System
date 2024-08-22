@@ -301,10 +301,16 @@ public class MainApplication {
             System.out.print("Enter Table ID: ");
             int tableId = scanner.nextInt();
             scanner.nextLine();  // Consume newline
-
+            System.out.println();
             List<OrderItem> items = new ArrayList<>();
             while (true) {
-                System.out.print("Enter Item ID (or 0 to finish): ");
+
+                System.out.println("=== Menu Items ===");
+                System.out.println("1. Cheese Burger    ($5.99)");
+                System.out.println("2. Veggie Burger    ($5.99)");
+                System.out.println("3. Chicken Sandwich ($5.99)");
+                System.out.println("0. To Total Order");
+                System.out.print("Enter Item Number: ");
                 int itemId = scanner.nextInt();
                 scanner.nextLine();
                 if (itemId == 0) break;
@@ -319,6 +325,9 @@ public class MainApplication {
 
                 items.add(orderItem);                   // Add the item to the list
             }
+
+            double totalPrice = calculateTotalPrice(items);
+            System.out.printf("Total Price: $%.2f%n", totalPrice);
 
             // Prompt for order status
             System.out.print("Enter Order Status (e.g., Waiting, In Progress, Completed): ");
@@ -415,7 +424,7 @@ public class MainApplication {
 
     private static void createTable() {
         try {
-            System.out.print("Enter table size (number of seats): ");
+            System.out.print("Enter table size (number of customers): ");
             int size = scanner.nextInt();
             scanner.nextLine();  // Consume newline
             System.out.print("Enter table status (Available/Reserved/Occupied): ");
