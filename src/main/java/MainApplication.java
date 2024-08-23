@@ -356,9 +356,24 @@ public class MainApplication {
                 int itemId = scanner.nextInt();
                 scanner.nextLine();
                 if (itemId == 0) break;
-                System.out.print("Enter Quantity: ");
-                int quantity = scanner.nextInt();
-                scanner.nextLine();  // Consume newline
+
+                /*
+                added conditional statement below so that staff cannot select quantity of 0, when placing an order. bb
+                 */
+
+                int quantity;
+                while (true) {
+                    System.out.print("Enter Quantity: ");
+                    quantity = scanner.nextInt();
+                    scanner.nextLine();  // Consume newline
+
+                    if (quantity > 0) {
+                        break;
+                    } else {
+                        System.out.println("Quantity must be greater than 0. Please enter a valid quantity");
+                    }
+                }
+
 
 
                 OrderItem orderItem = new OrderItem();  // Create a new OrderItem instance
