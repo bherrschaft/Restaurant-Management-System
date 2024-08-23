@@ -389,7 +389,7 @@ public class MainApplication {
 
 
                 // Prompt for order status
-            System.out.print("Enter Order Status (e.g., Waiting, In Progress, Completed): ");
+            System.out.print("Enter Order Status (Waiting, Preparing, Ready): ");
             String status = scanner.nextLine();
 
             Order order = new Order();
