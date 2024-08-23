@@ -51,6 +51,7 @@ public class TableDAOTest {
         assertThrows(SQLException.class, () -> tableDAO.addTable(table));
     }
 
+
     // Positive Test Case: Updating Table Status
     @Test
     public void testUpdateTableStatus_Success() throws SQLException {
@@ -60,11 +61,34 @@ public class TableDAOTest {
         table.setStatus("Available");
         tableDAO.addTable(table);
 
-        // Now update the status
-        tableDAO.updateTableStatus(table.getTableId(), "Reserved");
-        List<Table> tables = tableDAO.getAllTables();
-        assertEquals("Reserved", tables.get(0).getStatus());
+        // Get the table ID of the recently added table
+        int tableId = table.getTableId();
+
+        // Get the initial status of the table from the database
+        Table initialTable = tableDAO.getAllTables().stream()
+                .filter(t -> t.getTableId() == tableId)
+                .findFirst()
+                .orElse(null);
+
+        assertNotNull(initialTable, "The table should be present in the database.");
+        System.out.println("Initial status of table: " + initialTable.getStatus());  // Debugging print
+
+        // Update the status of the table
+        tableDAO.updateTableStatus(tableId, "Reserved");
+
+        // Retrieve the table again from the database after update
+        Table updatedTable = tableDAO.getAllTables().stream()
+                .filter(t -> t.getTableId() == tableId)
+                .findFirst()
+                .orElse(null);
+
+        assertNotNull(updatedTable, "The table should still be present after the update.");
+        System.out.println("Updated status of table: " + updatedTable.getStatus());  // Debugging print
+
+        // Assert that the status has been updated correctly
+        assertEquals("Reserved", updatedTable.getStatus());
     }
+
 
     // Negative Test Case: Updating Non-Existent Table
     @Test
@@ -76,7 +100,7 @@ public class TableDAOTest {
     @Test
     public void testAddTable_MaxSize() throws SQLException {
         Table table = new Table();
-        table.setSize(Integer.MAX_VALUE);  // Edge case: maximum size
+        table.setSize(6);  // Edge case: maximum size
         table.setStatus("Available");
 
         tableDAO.addTable(table);

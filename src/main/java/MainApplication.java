@@ -87,10 +87,10 @@ public class MainApplication {
 
                 String role = UserDAO.getUserRole(username);
                 if ("manager".equalsIgnoreCase(role)) {
-                    System.out.println("Login successful!");
+                    System.out.println("Logged in as:" + "(" + role.toUpperCase() + ")");
                     showMainMenu();
                 }else {
-                    System.out.println("Login successful!");
+                    System.out.println("Logged in as:" + "(" + role.toUpperCase() + ")");
                     showStaffMenu();
                 }
             } else {
@@ -483,7 +483,7 @@ public class MainApplication {
 
     private static void createTable() {
         try {
-            System.out.print("Enter table size (number of customers): ");
+            System.out.print("Enter table size (1-6 of customers): ");
             int size = scanner.nextInt();
             scanner.nextLine();  // Consume newline
             System.out.print("Enter table status (Available/Reserved/Occupied): ");
@@ -493,11 +493,15 @@ public class MainApplication {
             table.setSize(size);
             table.setStatus(status);
             tableDAO.addTable(table);
-            System.out.println("Table created successfully!");
+            System.out.println("Table created successfully with ID: " + table.getTableId());
         } catch (SQLException e) {
             System.out.println("Error creating table: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Invalid input. Please try again.");
         }
     }
+
+    /*
     private static void updateTableStatus() {
         try {
             // Prompt the user for table ID
@@ -519,6 +523,52 @@ public class MainApplication {
             System.out.println("Invalid input. Please try again.");
         }
     }
+    */
+
+    private static void updateTableStatus() {
+        try {
+            // Prompt the user for table ID
+            System.out.print("Enter Table ID to update: ");
+            int tableId = scanner.nextInt();
+            scanner.nextLine();  // Consume newline
+
+            // Prompt the user for new status
+            System.out.print("Enter new status for the table (e.g., 'Available', 'Occupied', 'Reserved'): ");
+            String status = scanner.nextLine();
+
+            // Debugging: Print the values being passed
+            System.out.println("Updating table with ID: " + tableId + " to status: " + status);
+
+            // Update the table status using TableDAO and get rows affected
+            int rowsAffected = tableDAO.updateTableStatus(tableId, status);
+
+            // Check if any row was updated
+            if (rowsAffected > 0) {
+                System.out.println("Table status updated successfully!");
+
+                // Fetch the updated table and print its status
+                Table updatedTable = tableDAO.getAllTables().stream()
+                        .filter(table -> table.getTableId() == tableId)
+                        .findFirst()
+                        .orElse(null);
+
+                if (updatedTable != null) {
+                    System.out.println("Updated table status: " + updatedTable.getStatus());
+                }
+
+            } else {
+                System.out.println("No rows were updated. Please check the table ID.");
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error updating table status: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Invalid input. Please try again.");
+        }
+    }
+
+
+
     private static void viewAllTables() {
         try {
             // Fetch all tables from the TableDAO
